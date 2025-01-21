@@ -1,6 +1,8 @@
 import os
 from urllib.parse import unquote
 from flask import Flask, render_template, request, redirect, url_for
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -68,6 +70,10 @@ def load_quiz(file_name="py.txt"):
 # Load questions from the text file
 quiz_data = load_quiz("py.txt")
 
+@app.route("/test")
+def test():
+    return "Test route is working!"
+
 @app.route("/")
 def index():
     categories = list(quiz_data.keys())  # Get all categories
@@ -75,7 +81,9 @@ def index():
 
 @app.route("/quiz/<category>", methods=["GET", "POST"])
 def quiz(category):
+    logging.debug(f"Category requested: {category}")
     if category not in quiz_data:
+        logging.debug("Category not found")
         return redirect(url_for("index"))
 
     questions = quiz_data[category]
