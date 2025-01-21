@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App</title>
+</head>
+<body>
+    <h1>Welcome to the Quiz App</h1>
+    <h2>Choose a Category</h2>
+    <ul>
+        {% for category in categories %}
+        <li><a href="{{ url_for('quiz', category=category) }}">{{ category }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

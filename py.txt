@@ -1,0 +1,129 @@
+#Basic Python Questions
+
+*What are Python’s key features?
+*How is Python an interpreted language?
+*What is the difference between list, tuple, and set in Python?
+*Explain Python's GIL (Global Interpreter Lock).
+*What are Python's built-in data types?
+*How does Python manage memory?
+*What is the difference between shallow copy and deep copy?
+*What are Python's immutable data types?
+*Explain the use of is vs == in Python.
+*How does Python handle type checking?
+
+#Intermediate Python Questions
+
+*What are list comprehensions, and how do they differ from generator expressions?
+*Explain Python decorators with an example.
+*What is the difference between @staticmethod and @classmethod?
+*How is exception handling implemented in Python?
+*Explain the difference between *args and **kwargs.
+*What is the purpose of Python's with statement?
+*How does Python handle imports and modules?
+*What is the purpose of the global and nonlocal keywords?
+*How do you manage Python dependencies?
+*How do you handle circular imports in Python?
+
+#Data Structures
+
+*How do you implement a stack or queue in Python?
+*Explain the difference between dict and OrderedDict.
+*How does Python's set differ from a list?
+*How are Python dictionaries implemented under the hood?
+*Explain how Python handles hash collisions in dictionaries.
+*What is the difference between array and list?
+*How do you reverse a string or list in Python?
+*How would you implement a linked list in Python?
+*How does Python's collections module enhance data structures?
+*What are frozensets, and where would you use them?
+
+#Advanced Python Topics
+
+*What are metaclasses in Python, and how are they used?
+*Explain Python's garbage collection mechanism.
+*How does the @property decorator work?
+*How does Python manage object lifecycle?
+*Explain how multithreading is different from multiprocessing in Python.
+*What is a coroutine, and how is it different from a generator?
+*Explain the use of Python's async and await keywords.
+*How does Python's itertools module optimize loops?
+*What is the difference between a normal function and a lambda function in Python?
+*Explain how you would optimize Python code for performance.
+
+#Libraries and Frameworks
+
+*What are Python's standard libraries, and when would you use them?
+*Explain the use of NumPy for numerical computing.
+*What is Pandas, and how is it used for data manipulation?
+*What is the purpose of Python's os and sys modules?
+*How does Django differ from Flask?
+*Explain the use of Python's unittest or pytest libraries.
+*How do you implement REST APIs in Python?
+*What is Python's re module used for?
+*How do you work with Python's logging module?
+*Explain how Python’s json library handles serialization.
+
+#Database Handling
+
+*How do you connect to a database in Python?
+*What is the difference between SQLAlchemy and Django ORM?
+*How do you execute raw SQL queries in Python?
+*How would you handle database transactions in Python?
+*What are prepared statements, and how are they implemented in Python?
+*How do you optimize database queries in Python?
+*Explain Python's sqlite3 module.
+*What is an ORM, and why is it useful?
+*How do you handle database migrations in Python?
+*Explain how Python manages connection pooling.
+
+#Testing and Debugging
+
+*How do you write unit tests in Python?
+*What is the difference between mocking and patching in testing?
+*How do you debug Python code effectively?
+*How would you test a Python script that involves external APIs?
+*What is test coverage, and how do you measure it?
+*How do you implement parameterized tests in Python?
+*What tools do you use for performance profiling in Python?
+*How would you log errors during runtime?
+*What is pdb, and how is it used for debugging?
+*How do you handle flaky tests in Python?
+
+#Object-Oriented Programming (OOP)
+
+*What are the four pillars of OOP, and how are they implemented in Python?
+*What is the difference between inheritance and polymorphism?
+*Explain multiple inheritance in Python with an example.
+*What is method overloading and overriding in Python?
+*How are private variables managed in Python?
+*What is the difference between an abstract class and an interface in Python?
+*Explain the concept of MRO (Method Resolution Order) in Python.
+*How do you implement design patterns like Singleton or Factory in Python?
+*How does Python handle duck typing?
+*How do you enforce immutability in Python classes?
+
+#File Handling
+
+*How do you read and write files in Python?
+*What is the difference between read() and readlines() methods?
+*How do you handle file locking in Python?
+*How would you process large files efficiently?
+*What is the use of the shutil module in Python?
+*How do you handle JSON or XML files in Python?
+*How do you manage file paths across different platforms?
+*How do you handle CSV files in Python?
+*How would you compress or decompress files in Python?
+*How do you safely close a file in Python?
+
+#Coding and Problem-Solving
+
+*Write a Python program to find the nth Fibonacci number.
+*Write a function to check if a string is a palindrome.
+*Implement a binary search in Python.
+*Write a function to find the longest substring without repeating characters.
+*How do you remove duplicates from a list in Python?
+*Write a Python program to implement quicksort.
+*Implement a Python function to find the GCD of two numbers.
+*How do you count the frequency of words in a file using Python?
+*Write a program to validate an email address using regular expressions.
+*How do you flatten a nested list in Python?

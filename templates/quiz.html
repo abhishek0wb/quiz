@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category }} Quiz</title>
+</head>
+<body>
+    <h1>{{ category }} Quiz</h1>
+    <form method="POST">
+        {% for question in questions %}
+        <p>{{ loop.index }}. {{ question }}</p>
+        <input type="text" name="q{{ loop.index }}">
+        {% endfor %}
+        <button type="submit">Submit Answers</button>
+    </form>
+</body>
+</html>
