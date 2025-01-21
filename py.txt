@@ -1,129 +1,193 @@
 #Basic Python Questions
 
-*What are Python’s key features?
-*How is Python an interpreted language?
+* What are Python’s key features?
+$ Python is dynamically typed and supports multiple paradigms.
+& It is a statically typed language.
+& Python does not support object-oriented programming.
+& Python directly compiles into machine code.
+
+* How is Python an interpreted language?
+$ Python code is executed line by line at runtime.
+& Python compiles directly into machine code.
+& Python does not use an interpreter for execution.
+& Python code is compiled and then run.
+
 *What is the difference between list, tuple, and set in Python?
+$ Lists and tuples are ordered, while sets are unordered.
+& Lists and sets allow duplicate elements; tuples do not.
+& Tuples and sets are mutable; lists are immutable.
+& All three are unordered collections.
+
 *Explain Python's GIL (Global Interpreter Lock).
+$ GIL restricts execution of Python threads to one at a time.
+& GIL allows concurrent execution of threads in Python.
+& GIL is used to manage garbage collection in Python.
+& GIL optimizes multithreading performance.
+
 *What are Python's built-in data types?
+$ int, float, list, dict, tuple, and str.
+& Integer, String, Pointer, and Array.
+& Class, Object, Boolean, and Float.
+& Complex, Binary, Decimal, and Pointer.
+
 *How does Python manage memory?
+$ Python uses an automatic garbage collection mechanism.
+& Python relies on manual memory management.
+& Python memory is managed using pointers like C.
+& Python stores all variables in stack memory.
+
 *What is the difference between shallow copy and deep copy?
+$ Shallow copy copies the reference; deep copy duplicates the objects.
+& Shallow copy duplicates objects; deep copy copies references.
+& There is no difference between shallow and deep copies.
+& Deep copy refers only to copying immutable objects.
+
 *What are Python's immutable data types?
+$ str, tuple, int, and frozenset.
+& list, dict, set, and string.
+& list, tuple, and dictionary.
+& Complex, Float, and Boolean.
+
 *Explain the use of is vs == in Python.
+$ is checks identity; == checks equality.
+& is and == both check identity.
+& is checks equality; == checks identity.
+& Both are interchangeable in Python.
+
 *How does Python handle type checking?
+$ Python uses dynamic type checking at runtime.
+& Python uses static type checking during compilation.
+& Python does not support type checking.
+& Python requires the programmer to define types explicitly.
+
+
+
 
 #Intermediate Python Questions
 
 *What are list comprehensions, and how do they differ from generator expressions?
+$ List comprehensions generate a complete list, while generator expressions yield items lazily.
+& Both generate a complete list in memory.
+& Generator expressions are faster than list comprehensions for creating lists.
+& List comprehensions are slower but consume less memory.
+
 *Explain Python decorators with an example.
+$ Decorators modify or extend the behavior of functions or methods.
+& Decorators are used to define private methods in Python.
+& Decorators can only be applied to class methods.
+& Decorators are tools for documenting Python functions.
+
 *What is the difference between @staticmethod and @classmethod?
+$ @staticmethod does not access class variables, while @classmethod does.
+& @staticmethod is the same as @classmethod but for immutable classes.
+& @classmethod can only access instance variables.
+& Both are equivalent in functionality.
+
 *How is exception handling implemented in Python?
-*Explain the difference between *args and **kwargs.
+$ By using the try-except-else-finally block structure.
+& Python uses the throw-catch mechanism for exception handling.
+& Python does not support exception handling directly.
+& Exception handling is achieved through global error handlers.
+
+*Explain the difference between *args and kwargs.
+$ *args allows passing variable-length positional arguments, while **kwargs allows passing variable-length keyword arguments.
+& Both *args and **kwargs are used only in lambda functions.
+& *args is used for dictionaries, and **kwargs is used for lists.
+& *args and **kwargs are Python's shorthand for method overloading.
+
 *What is the purpose of Python's with statement?
+$ To ensure resources like files or database connections are properly managed and closed.
+& To define private methods and variables in Python.
+& To improve performance of for-loops in Python.
+& To replace manual try-finally blocks for error handling.
+
 *How does Python handle imports and modules?
+$ Python uses the import statement to load and reuse code from other files or libraries.
+& Python compiles all imported modules into bytecode during runtime.
+& Python does not support importing external libraries.
+& Python imports modules automatically when a program runs.
+
 *What is the purpose of the global and nonlocal keywords?
+$ global declares variables as global, while nonlocal allows modifying variables in the nearest enclosing scope.
+& global and nonlocal are used to define private variables in Python.
+& Both global and nonlocal only work with immutable variables.
+& nonlocal allows access to global variables from any scope.
+
 *How do you manage Python dependencies?
+$ By using tools like pip, virtualenv, or poetry to manage project environments and packages.
+& By manually downloading and placing packages in the project folder.
+& Python does not provide tools for dependency management.
+& Dependencies are managed by setting the PYTHONPATH environment variable.
+
 *How do you handle circular imports in Python?
+$ By using import statements inside functions or using dynamic imports with importlib.
+& By disabling circular import checks in the Python interpreter.
+& Circular imports are automatically resolved by Python.
+& Circular imports cannot be handled in Python.
 
-#Data Structures
 
-*How do you implement a stack or queue in Python?
-*Explain the difference between dict and OrderedDict.
-*How does Python's set differ from a list?
-*How are Python dictionaries implemented under the hood?
-*Explain how Python handles hash collisions in dictionaries.
-*What is the difference between array and list?
-*How do you reverse a string or list in Python?
-*How would you implement a linked list in Python?
-*How does Python's collections module enhance data structures?
-*What are frozensets, and where would you use them?
 
 #Advanced Python Topics
 
 *What are metaclasses in Python, and how are they used?
+$ Metaclasses define the behavior and structure of classes themselves.
+& Metaclasses are used to define private variables in Python classes.
+& Metaclasses are specific to data types like int and float.
+& Metaclasses are used to manage memory allocation for objects.
+
 *Explain Python's garbage collection mechanism.
+$ Python uses reference counting and a cyclic garbage collector to manage memory.
+& Python relies entirely on manual memory management.
+& Python uses a garbage collection mechanism only for immutable objects.
+& Python does not support garbage collection.
+
 *How does the @property decorator work?
+$ The @property decorator allows a method to be accessed like an attribute.
+& The @property decorator creates immutable properties in classes.
+& The @property decorator is used only for static methods.
+& The @property decorator enforces type-checking in Python.
+
 *How does Python manage object lifecycle?
+$ Python uses constructors (__init__) and destructors (__del__) to manage object lifecycle.
+& Python manages the lifecycle only through manual deletion of objects.
+& Python does not handle object lifecycle; it is handled by the OS.
+& Python uses the new and delete keywords like C++.
+
 *Explain how multithreading is different from multiprocessing in Python.
+$ Multithreading shares memory space, while multiprocessing uses separate memory.
+& Multithreading is faster than multiprocessing for CPU-bound tasks.
+& Multiprocessing does not allow inter-process communication.
+& Both are identical in Python due to the GIL.
+
 *What is a coroutine, and how is it different from a generator?
+$ A coroutine can be paused and resumed at await points, while a generator yields values.
+& Both coroutines and generators are the same in Python.
+& Coroutines work only with asyncio, while generators do not.
+& Generators can only iterate once, but coroutines cannot iterate.
+
 *Explain the use of Python's async and await keywords.
+$ They are used to define and work with asynchronous code in Python.
+& They replace threading and multiprocessing in Python.
+& They are used to manage Python's GIL for better performance.
+& They are specific to network programming in Python.
+
 *How does Python's itertools module optimize loops?
+$ It provides efficient iterators to handle large data sets lazily.
+& It compiles loops into C code for faster execution.
+& It automatically parallelizes loop execution.
+& It caches intermediate results for future computations.
+
 *What is the difference between a normal function and a lambda function in Python?
+$ Lambda functions are anonymous and have a single expression, while normal functions can have multiple statements.
+& Lambda functions are faster than normal functions in all cases.
+& Normal functions cannot be used in Python comprehensions.
+& Lambda functions are specific to functional programming languages.
+
 *Explain how you would optimize Python code for performance.
+$ Use efficient data structures, minimize loops, and leverage libraries like NumPy.
+& Optimize Python code by disabling the GIL.
+& Always use global variables to avoid memory overhead.
+& Write all code in a single script to reduce execution time.
 
-#Libraries and Frameworks
 
-*What are Python's standard libraries, and when would you use them?
-*Explain the use of NumPy for numerical computing.
-*What is Pandas, and how is it used for data manipulation?
-*What is the purpose of Python's os and sys modules?
-*How does Django differ from Flask?
-*Explain the use of Python's unittest or pytest libraries.
-*How do you implement REST APIs in Python?
-*What is Python's re module used for?
-*How do you work with Python's logging module?
-*Explain how Python’s json library handles serialization.
 
-#Database Handling
-
-*How do you connect to a database in Python?
-*What is the difference between SQLAlchemy and Django ORM?
-*How do you execute raw SQL queries in Python?
-*How would you handle database transactions in Python?
-*What are prepared statements, and how are they implemented in Python?
-*How do you optimize database queries in Python?
-*Explain Python's sqlite3 module.
-*What is an ORM, and why is it useful?
-*How do you handle database migrations in Python?
-*Explain how Python manages connection pooling.
-
-#Testing and Debugging
-
-*How do you write unit tests in Python?
-*What is the difference between mocking and patching in testing?
-*How do you debug Python code effectively?
-*How would you test a Python script that involves external APIs?
-*What is test coverage, and how do you measure it?
-*How do you implement parameterized tests in Python?
-*What tools do you use for performance profiling in Python?
-*How would you log errors during runtime?
-*What is pdb, and how is it used for debugging?
-*How do you handle flaky tests in Python?
-
-#Object-Oriented Programming (OOP)
-
-*What are the four pillars of OOP, and how are they implemented in Python?
-*What is the difference between inheritance and polymorphism?
-*Explain multiple inheritance in Python with an example.
-*What is method overloading and overriding in Python?
-*How are private variables managed in Python?
-*What is the difference between an abstract class and an interface in Python?
-*Explain the concept of MRO (Method Resolution Order) in Python.
-*How do you implement design patterns like Singleton or Factory in Python?
-*How does Python handle duck typing?
-*How do you enforce immutability in Python classes?
-
-#File Handling
-
-*How do you read and write files in Python?
-*What is the difference between read() and readlines() methods?
-*How do you handle file locking in Python?
-*How would you process large files efficiently?
-*What is the use of the shutil module in Python?
-*How do you handle JSON or XML files in Python?
-*How do you manage file paths across different platforms?
-*How do you handle CSV files in Python?
-*How would you compress or decompress files in Python?
-*How do you safely close a file in Python?
-
-#Coding and Problem-Solving
-
-*Write a Python program to find the nth Fibonacci number.
-*Write a function to check if a string is a palindrome.
-*Implement a binary search in Python.
-*Write a function to find the longest substring without repeating characters.
-*How do you remove duplicates from a list in Python?
-*Write a Python program to implement quicksort.
-*Implement a Python function to find the GCD of two numbers.
-*How do you count the frequency of words in a file using Python?
-*Write a program to validate an email address using regular expressions.
-*How do you flatten a nested list in Python?

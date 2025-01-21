@@ -7,24 +7,61 @@ app = Flask(__name__)
 
 def load_quiz(file_name="py.txt"):
     quiz_data = {}
-    # Use an absolute path to locate the file
-    file_path = os.path.join(os.path.dirname(__file__), file_name)
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Quiz file not found at {file_path}")
-    
-    with open(file_path, "r") as file:
+    with open(file_name, "r", encoding="utf-8") as file:
         lines = file.readlines()
         current_category = None
+        current_question = None
+        current_options = []
+        correct_answer = None
+
         for line in lines:
             line = line.strip()
             if not line:
                 continue
-            if line.startswith("#"):  # Category starts with #
+
+            # Check for a category
+            if line.startswith("#"):
+                if current_category:
+                    # Save the last question
+                    quiz_data[current_category].append({
+                        "question": current_question,
+                        "options": current_options,
+                        "correct": correct_answer
+                    })
                 current_category = line[1:].strip()
                 quiz_data[current_category] = []
-            elif line.startswith("*") and current_category:  # Questions start with *
-                question = line[1:].strip()
-                quiz_data[current_category].append(question)
+                current_question = None
+                current_options = []
+                correct_answer = None
+
+            # Check for a question
+            elif line.startswith("*"):
+                if current_question:
+                    # Save the last question
+                    quiz_data[current_category].append({
+                        "question": current_question,
+                        "options": current_options,
+                        "correct": correct_answer
+                    })
+                current_question = line[1:].strip()
+                current_options = []
+                correct_answer = None
+
+            # Check for answers
+            elif line.startswith("$"):
+                correct_answer = line[1:].strip()
+                current_options.append(correct_answer)
+            elif line.startswith("&"):
+                current_options.append(line[1:].strip())
+
+        # Save the last question
+        if current_question:
+            quiz_data[current_category].append({
+                "question": current_question,
+                "options": current_options,
+                "correct": correct_answer
+            })
+
     return quiz_data
 
 
@@ -38,16 +75,23 @@ def index():
 
 @app.route("/quiz/<category>", methods=["GET", "POST"])
 def quiz(category):
-    category = unquote(category)  # Decode URL-encoded characters
     if category not in quiz_data:
         return redirect(url_for("index"))
-    
+
     questions = quiz_data[category]
     if request.method == "POST":
         user_answers = request.form.to_dict()
-        score = sum(1 for answer in user_answers.values() if answer.strip())  # Example scoring
-        return render_template("result.html", score=score, total=len(questions))
-    
+        score = 0
+        total = len(questions)
+
+        # Calculate the score
+        for idx, question in enumerate(questions, start=1):
+            user_answer = user_answers.get(f"q{idx}")
+            if user_answer == question["correct"]:
+                score += 1
+
+        return render_template("result.html", score=score, total=total)
+
     return render_template("quiz.html", category=category, questions=questions)
 
 if __name__ == "__main__":
