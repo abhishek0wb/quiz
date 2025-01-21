@@ -2,10 +2,10 @@ import os
 from urllib.parse import unquote
 from flask import Flask, render_template, request, redirect, url_for
 import logging
+
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-
 
 def load_quiz(file_name="py.txt"):
     quiz_data = {}
@@ -23,8 +23,8 @@ def load_quiz(file_name="py.txt"):
 
             # Check for a category
             if line.startswith("#"):
-                if current_category:
-                    # Save the last question
+                if current_category and current_question:
+                    # Save the last question of the previous category
                     quiz_data[current_category].append({
                         "question": current_question,
                         "options": current_options,
@@ -56,7 +56,7 @@ def load_quiz(file_name="py.txt"):
             elif line.startswith("&"):
                 current_options.append(line[1:].strip())
 
-        # Save the last question
+        # Save the last question of the last category
         if current_question:
             quiz_data[current_category].append({
                 "question": current_question,
@@ -64,23 +64,28 @@ def load_quiz(file_name="py.txt"):
                 "correct": correct_answer
             })
 
+    logging.debug(f"Loaded quiz data: {quiz_data}")
     return quiz_data
 
 
 # Load questions from the text file
 quiz_data = load_quiz("py.txt")
 
+
 @app.route("/test")
 def test():
     return "Test route is working!"
+
 
 @app.route("/")
 def index():
     categories = list(quiz_data.keys())  # Get all categories
     return render_template("index.html", categories=categories)
 
+
 @app.route("/quiz/<category>", methods=["GET", "POST"])
 def quiz(category):
+    category = unquote(category)
     logging.debug(f"Category requested: {category}")
     if category not in quiz_data:
         logging.debug("Category not found")
@@ -101,6 +106,7 @@ def quiz(category):
         return render_template("result.html", score=score, total=total)
 
     return render_template("quiz.html", category=category, questions=questions)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
