@@ -1,11 +1,16 @@
 import os
 from urllib.parse import unquote
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  # needed for flash messages
+
+# Use absolute path for py.txt
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+QUIZ_FILE = os.path.join(BASE_DIR, "py.txt")
 
 def load_quiz(file_name="py.txt"):
     quiz_data = {}
@@ -21,10 +26,10 @@ def load_quiz(file_name="py.txt"):
             if not line:
                 continue
 
-            # Check for a category
+            # Identify category
             if line.startswith("#"):
                 if current_category and current_question:
-                    # Save the last question of the previous category
+                    # Save the previous question to the current category
                     quiz_data[current_category].append({
                         "question": current_question,
                         "options": current_options,
@@ -36,10 +41,10 @@ def load_quiz(file_name="py.txt"):
                 current_options = []
                 correct_answer = None
 
-            # Check for a question
+            # Identify question
             elif line.startswith("*"):
                 if current_question:
-                    # Save the last question
+                    # Save the current question
                     quiz_data[current_category].append({
                         "question": current_question,
                         "options": current_options,
@@ -49,46 +54,42 @@ def load_quiz(file_name="py.txt"):
                 current_options = []
                 correct_answer = None
 
-            # Check for answers
+            # Identify correct and incorrect options
             elif line.startswith("$"):
                 correct_answer = line[1:].strip()
-                current_options.append(correct_answer)
+                current_options.append(correct_answer)  # Mark as correct
             elif line.startswith("&"):
-                current_options.append(line[1:].strip())
+                current_options.append(line[1:].strip())  # Add incorrect option
 
-        # Save the last question of the last category
-        if current_question:
+        # Save the last question in the file
+        if current_category and current_question:
             quiz_data[current_category].append({
                 "question": current_question,
                 "options": current_options,
                 "correct": correct_answer
             })
 
-    logging.debug(f"Loaded quiz data: {quiz_data}")
     return quiz_data
-
-
-# Load questions from the text file
-quiz_data = load_quiz("py.txt")
 
 
 @app.route("/test")
 def test():
     return "Test route is working!"
 
+# Load quiz data
+quiz_data = load_quiz(QUIZ_FILE)
 
 @app.route("/")
 def index():
-    categories = list(quiz_data.keys())  # Get all categories
+    categories = list(quiz_data.keys())  # Get the list of categories directly
     return render_template("index.html", categories=categories)
 
 
 @app.route("/quiz/<category>", methods=["GET", "POST"])
 def quiz(category):
-    category = unquote(category)
-    logging.debug(f"Category requested: {category}")
+    category = unquote(category)  # Decode URL-encoded category
     if category not in quiz_data:
-        logging.debug("Category not found")
+        app.logger.info(f"Category not found: {category}")
         return redirect(url_for("index"))
 
     questions = quiz_data[category]
@@ -106,7 +107,6 @@ def quiz(category):
         return render_template("result.html", score=score, total=total)
 
     return render_template("quiz.html", category=category, questions=questions)
-
 
 if __name__ == "__main__":
     app.run(debug=True)
