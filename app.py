@@ -6,13 +6,13 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key'  # needed for flash messages
+app.secret_key = os.getenv('FLASK_SECRET_KEY') 
 
 # Use absolute path for py.txt
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 QUIZ_FILE = os.path.join(BASE_DIR, "py.txt")
 
-def load_quiz(file_name="py.txt"):
+def load_quiz(file_name):
     quiz_data = {}
     with open(file_name, "r", encoding="utf-8") as file:
         lines = file.readlines()
@@ -78,6 +78,10 @@ def test():
 
 # Load quiz data
 quiz_data = load_quiz(QUIZ_FILE)
+
+# After loading quiz data
+app.logger.info(f"Loaded categories: {list(quiz_data.keys())}")
+
 
 @app.route("/")
 def index():
