@@ -1,12 +1,12 @@
 import os
 from urllib.parse import unquote
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-app.secret_key = os.getenv('FLASK_SECRET_KEY') 
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'default-secret-key')  # Added default key for development
 
 # Use absolute path for py.txt
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,6 +20,7 @@ def load_quiz(file_name):
         current_question = None
         current_options = []
         correct_answer = None
+        question_id = 0  # Added to track question IDs
 
         for line in lines:
             line = line.strip()
@@ -31,6 +32,7 @@ def load_quiz(file_name):
                 if current_category and current_question:
                     # Save the previous question to the current category
                     quiz_data[current_category].append({
+                        "id": question_id,  # Added question ID
                         "question": current_question,
                         "options": current_options,
                         "correct": correct_answer
@@ -46,10 +48,12 @@ def load_quiz(file_name):
                 if current_question:
                     # Save the current question
                     quiz_data[current_category].append({
+                        "id": question_id,  # Added question ID
                         "question": current_question,
                         "options": current_options,
                         "correct": correct_answer
                     })
+                    question_id += 1  # Increment question ID
                 current_question = line[1:].strip()
                 current_options = []
                 correct_answer = None
@@ -57,13 +61,14 @@ def load_quiz(file_name):
             # Identify correct and incorrect options
             elif line.startswith("$"):
                 correct_answer = line[1:].strip()
-                current_options.append(correct_answer)  # Mark as correct
+                current_options.append(correct_answer)
             elif line.startswith("&"):
-                current_options.append(line[1:].strip())  # Add incorrect option
+                current_options.append(line[1:].strip())
 
         # Save the last question in the file
         if current_category and current_question:
             quiz_data[current_category].append({
+                "id": question_id,  # Added question ID
                 "question": current_question,
                 "options": current_options,
                 "correct": correct_answer
@@ -71,46 +76,65 @@ def load_quiz(file_name):
 
     return quiz_data
 
-
-@app.route("/test")
-def test():
-    return "Test route is working!"
-
 # Load quiz data
 quiz_data = load_quiz(QUIZ_FILE)
 
 # After loading quiz data
 app.logger.info(f"Loaded categories: {list(quiz_data.keys())}")
 
-
 @app.route("/")
 def index():
-    categories = list(quiz_data.keys())  # Get the list of categories directly
+    categories = list(quiz_data.keys())
     return render_template("index.html", categories=categories)
-
 
 @app.route("/quiz/<category>", methods=["GET", "POST"])
 def quiz(category):
-    category = unquote(category)  # Decode URL-encoded category
+    category = unquote(category)
     if category not in quiz_data:
-        app.logger.info(f"Category not found: {category}")
+        flash("Category not found!", "error")
         return redirect(url_for("index"))
 
     questions = quiz_data[category]
+    
     if request.method == "POST":
         user_answers = request.form.to_dict()
         score = 0
         total = len(questions)
+        results = []
 
-        # Calculate the score
-        for idx, question in enumerate(questions, start=1):
-            user_answer = user_answers.get(f"q{idx}")
-            if user_answer == question["correct"]:
+        for question in questions:
+            question_id = str(question["id"])
+            user_answer = user_answers.get(f"q{question_id}")
+            is_correct = user_answer == question["correct"]
+
+            results.append({
+                "question": question["question"],
+                "user_answer": user_answer,
+                "correct_answer": question["correct"],
+                "is_correct": is_correct
+            })
+
+            if is_correct:
                 score += 1
 
-        return render_template("result.html", score=score, total=total)
+        return render_template(
+            "result.html",
+            score=score,
+            total=total,
+            category=category,
+            results=results
+        )
 
     return render_template("quiz.html", category=category, questions=questions)
+
+
+@app.route("/review_last_quiz")
+def review_last_quiz():
+    results = session.get('last_quiz_results')
+    if not results:
+        flash("No quiz results found!", "error")
+        return redirect(url_for("index"))
+    return render_template("review.html", **results)
 
 if __name__ == "__main__":
     app.run(debug=True)

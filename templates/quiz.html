@@ -1,22 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ category }} Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>{{ category }} Quiz</h1>
     <form method="POST">
         {% for question in questions %}
-        <p>{{ loop.index }}. {{ question.question }}</p>
-        {% for option in question.options %}
-        <label>
-            <!-- Use a unique name for each question group -->
-            <input type="radio" name="q{{ loop.index }}" value="{{ option }}">
-            {{ option }}
-        </label><br>
-        {% endfor %}
+        <div class="question">
+            <p>{{ loop.index }}. {{ question.question }}</p>
+            {% for option in question.options %}
+            <div class="option">
+                <input 
+                    type="radio" 
+                    id="q{{ question.id }}_{{ loop.index }}" 
+                    name="q{{ question.id }}" 
+                    value="{{ option }}" 
+                    required
+                >
+                <label for="q{{ question.id }}_{{ loop.index }}">
+                    {{ option }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
         {% endfor %}
         <button type="submit">Submit Answers</button>
     </form>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
